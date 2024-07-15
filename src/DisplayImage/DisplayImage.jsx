@@ -1,4 +1,4 @@
-
+// src/components/DisplayImage/DisplayImage.js
 const DisplayImage = ({ imageUrl, imageBlob }) => {
   const handleDownload = () => {
     const link = document.createElement('a');
@@ -19,7 +19,7 @@ const DisplayImage = ({ imageUrl, imageBlob }) => {
   };
 
   return (
-    <div style={{ textAlign: 'center', background:'red' }}>
+    <div style={{ textAlign: 'center' }}>
       <h3>Background Removed Image:</h3>
       <img src={imageUrl} alt="Background Removed" style={{ maxWidth: '100%', marginTop: '10px' }} />
       <br />
