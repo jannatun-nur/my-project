@@ -1,5 +1,7 @@
 import { useState, useCallback } from "react";
 import axios from "axios";
+import { GrDownload } from "react-icons/gr";
+import { FaCopy } from "react-icons/fa";
 
 const BackgroundRemover = () => {
   const [selectedFile, setSelectedFile] = useState(null);
@@ -134,10 +136,33 @@ const BackgroundRemover = () => {
     }
   };
 
+  const handleReset = () => {
+    setSelectedFile(null);
+    setImageUrl("");
+    setImageBlob(null);
+    setImageLink("");
+    setPreviewUrl(null);
+    setHistory([]);
+    setHistoryIndex(-1);
+  };
+
   return (
-    <div className="lg:flex lg:justify-evenly px-4">
+    <div className="lg:flex lg:justify-evenly px-4 mt-10">
+
+        <div style={{ position: "absolute", right: "10px", top: "10px"}}>
+          <button onClick={handleUndo} disabled={historyIndex <= 0} className="px-4 py-2 bg-gradient-to-r from-indigo-900 via-blue-700 to-blue-500 text-white rounded-lg font-serif mr-3">
+            Undo
+          </button>
+          <button onClick={handleRedo} disabled={historyIndex >= history.length - 1} className="px-4 py-2 bg-gradient-to-r from-indigo-900 via-blue-700 to-blue-500 text-white rounded-lg font-serif mr-3">
+            Redo
+          </button>
+          <button onClick={handleReset} className="px-4 py-2 bg-gradient-to-r from-indigo-900 via-blue-700 to-blue-500 text-white rounded-lg font-serif mr-3" >
+            Reset
+          </button>
+        </div>
+
       <div>
-        <p className="mt-24 text-4xl font-bold text-center">
+        <p className="mt-24 text-4xl font-bold text-center text-indigo-700">
           Remove unnecessary background from your image
         </p>
         <button className="text-white mt-8 text-xl font-bold bg-gradient-to-r from-indigo-800 via-blue-600 px-6 py-2 rounded-ee-full ml-60">
@@ -150,26 +175,17 @@ const BackgroundRemover = () => {
           textAlign: "center",
           width: "600px",
           height: "500px",
-          background: "#c1c1c1",
           position: "relative",
         }}
       >
-        <div style={{ position: "absolute", right: "10px", top: "10px" }}>
-          <button onClick={handleUndo} disabled={historyIndex <= 0} style={{ padding: '5px 10px', marginRight: '5px' }}>
-            Undo
-          </button>
-          <button onClick={handleRedo} disabled={historyIndex >= history.length - 1} style={{ padding: '5px 10px' }}>
-            Redo
-          </button>
-        </div>
-
+    
         <div
           onDragEnter={handleDrag}
           onDragLeave={handleDrag}
           onDragOver={handleDrag}
           onDrop={handleDrop}
           style={{
-            border: dragActive ? "2px dashed #000" : "2px solid #ccc",
+            border: dragActive ? "2px dashed #000" : "",
             padding: "20px",
             marginBottom: "10px",
           }}
@@ -208,26 +224,28 @@ const BackgroundRemover = () => {
                   src={imageUrl}
                   alt="Background Removed"
                   style={{
-                    maxWidth: "100%",
-                    maxHeight: "100%",
+                    maxWidth: "250px",
+                    maxHeight: "280px",
                     objectFit: "contain",
                     marginBottom: "10px",
                   }}
                 />
+                <div className="flex ">
                 <button onClick={handleDownload} style={{ padding: '5px 10px', marginTop: '5px' }}>
-                  Download Image
+                <GrDownload />
                 </button>
                 <button onClick={handleCopyLink} style={{ padding: '5px 10px', marginTop: '5px' }}>
-                  Copy Link
+                <FaCopy />
                 </button>
+                </div>
               </>
             ) : previewUrl ? (
               <img
                 src={previewUrl}
                 alt="Selected"
                 style={{
-                  maxWidth: "100%",
-                  maxHeight: "100%",
+                  maxWidth: "250px",
+                  maxHeight: "280px",
                   objectFit: "contain",
                 }}
               />
